@@ -1,0 +1,29 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / Editor
+.vscode/
+.idea/
+
+# Build artifacts
+bin/
+obj/
+dist/
+node_modules/
+
+# Azure / Terraform state (future-proofing)
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.*
+
+# Local Azure function settings (future)
+local.settings.json

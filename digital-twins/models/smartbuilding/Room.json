@@ -1,0 +1,25 @@
+{
+  "@id": "dtmi:moiz:smartbuilding:Room;1",
+  "@type": "Interface",
+  "@context": "dtmi:dtdl:context;2",
+  "displayName": "Room",
+  "extends": "dtmi:moiz:core:Entity;1",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "roomNumber",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "floor",
+      "schema": "integer"
+    },
+    {
+      "@type": "Relationship",
+      "name": "hasHVAC",
+      "target": "dtmi:moiz:smartbuilding:HVACUnit;1",
+      "maxMultiplicity": 10
+    }
+  ]
+}
