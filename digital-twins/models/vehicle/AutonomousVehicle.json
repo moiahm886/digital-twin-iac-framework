@@ -1,0 +1,25 @@
+{
+  "@id": "dtmi:moiz:vehicle:AutonomousVehicle;1",
+  "@type": "Interface",
+  "@context": "dtmi:dtdl:context;2",
+  "displayName": "Autonomous Vehicle",
+  "extends": "dtmi:moiz:core:Entity;1",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "vin",
+      "schema": "string"
+    },
+    {
+      "@type": "Property",
+      "name": "model",
+      "schema": "string"
+    },
+    {
+      "@type": "Relationship",
+      "name": "hasPowertrain",
+      "target": "dtmi:moiz:vehicle:Powertrain;1",
+      "maxMultiplicity": 1
+    }
+  ]
+}

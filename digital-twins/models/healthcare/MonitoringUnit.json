@@ -1,0 +1,7 @@
+{
+  "@id": "dtmi:moiz:healthcare:MonitoringUnit;1",
+  "@type": "Interface",
+  "@context": "dtmi:dtdl:context;2",
+  "displayName": "Monitoring Unit",
+  "extends": "dtmi:moiz:core:Subsystem;1"
+}

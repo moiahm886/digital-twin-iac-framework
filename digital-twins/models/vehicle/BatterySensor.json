@@ -1,0 +1,25 @@
+{
+  "@id": "dtmi:moiz:vehicle:BatterySensor;1",
+  "@type": "Interface",
+  "@context": "dtmi:dtdl:context;2",
+  "displayName": "Battery Sensor",
+  "extends": "dtmi:moiz:core:Sensor;1",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "currentChargePercentage",
+      "schema": "double"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "batteryReading",
+      "schema": {
+        "@type": "Object",
+        "fields": [
+          { "name": "chargePercentage", "schema": "double" },
+          { "name": "timestamp", "schema": "dateTime" }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "@id": "dtmi:moiz:vehicle:GPSSensor;1",
+  "@type": "Interface",
+  "@context": "dtmi:dtdl:context;2",
+  "displayName": "GPS Sensor",
+  "extends": "dtmi:moiz:core:Sensor;1",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "currentLatitude",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "currentLongitude",
+      "schema": "double"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "gpsReading",
+      "schema": {
+        "@type": "Object",
+        "fields": [
+          { "name": "latitude", "schema": "double" },
+          { "name": "longitude", "schema": "double" },
+          { "name": "timestamp", "schema": "dateTime" }
+        ]
+      }
+    }
+  ]
+}

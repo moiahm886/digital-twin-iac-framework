@@ -1,0 +1,20 @@
+{
+  "@id": "dtmi:moiz:healthcare:PatientMonitor;1",
+  "@type": "Interface",
+  "@context": "dtmi:dtdl:context;2",
+  "displayName": "Patient Monitor",
+  "extends": "dtmi:moiz:core:Entity;1",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "patientId",
+      "schema": "string"
+    },
+    {
+      "@type": "Relationship",
+      "name": "hasMonitoringUnit",
+      "target": "dtmi:moiz:healthcare:MonitoringUnit;1",
+      "maxMultiplicity": 1
+    }
+  ]
+}

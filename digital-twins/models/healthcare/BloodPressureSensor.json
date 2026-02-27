@@ -1,0 +1,31 @@
+{
+  "@id": "dtmi:moiz:healthcare:BloodPressureSensor;1",
+  "@type": "Interface",
+  "@context": "dtmi:dtdl:context;2",
+  "displayName": "Blood Pressure Sensor",
+  "extends": "dtmi:moiz:core:Sensor;1",
+  "contents": [
+    {
+      "@type": "Property",
+      "name": "currentSystolic",
+      "schema": "double"
+    },
+    {
+      "@type": "Property",
+      "name": "currentDiastolic",
+      "schema": "double"
+    },
+    {
+      "@type": "Telemetry",
+      "name": "bloodPressureReading",
+      "schema": {
+        "@type": "Object",
+        "fields": [
+          { "name": "systolic", "schema": "double" },
+          { "name": "diastolic", "schema": "double" },
+          { "name": "timestamp", "schema": "dateTime" }
+        ]
+      }
+    }
+  ]
+}
