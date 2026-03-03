@@ -5,11 +5,7 @@
   "displayName": "CO2 Sensor",
   "extends": "dtmi:moiz:core:Sensor;1",
   "contents": [
-    {
-      "@type": "Property",
-      "name": "currentCO2ppm",
-      "schema": "double"
-    },
+    { "name": "currentCO2ppm", "@type": "Property", "schema": "double" },
     {
       "@type": "Telemetry",
       "name": "co2Reading",

@@ -3,5 +3,8 @@
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "HVAC Unit",
-  "extends": "dtmi:moiz:core:Subsystem;1"
+  "extends": "dtmi:moiz:core:Subsystem;1",
+  "contents": [
+    { "name": "powerState", "@type": "Property", "schema": "string" }
+  ]
 }

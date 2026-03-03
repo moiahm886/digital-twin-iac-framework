@@ -5,16 +5,8 @@
   "displayName": "Room",
   "extends": "dtmi:moiz:core:Entity;1",
   "contents": [
-    {
-      "@type": "Property",
-      "name": "roomNumber",
-      "schema": "string"
-    },
-    {
-      "@type": "Property",
-      "name": "floor",
-      "schema": "integer"
-    },
+    { "name": "roomNumber", "@type": "Property", "schema": "string" },
+    { "name": "floor", "@type": "Property", "schema": "integer" },
     {
       "@type": "Relationship",
       "name": "hasHVAC",

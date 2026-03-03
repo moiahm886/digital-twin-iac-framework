@@ -8,12 +8,6 @@
       "@type": "Property",
       "name": "status",
       "schema": "string"
-    },
-    {
-      "@type": "Relationship",
-      "name": "hasSubsystem",
-      "target": "dtmi:moiz:core:Subsystem;1",
-      "maxMultiplicity": 100
     }
   ]
 }

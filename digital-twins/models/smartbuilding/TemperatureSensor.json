@@ -5,11 +5,7 @@
   "displayName": "Temperature Sensor",
   "extends": "dtmi:moiz:core:Sensor;1",
   "contents": [
-    {
-      "@type": "Property",
-      "name": "currentTemperature",
-      "schema": "double"
-    },
+    { "name": "currentTemperature", "@type": "Property", "schema": "double" },
     {
       "@type": "Telemetry",
       "name": "temperatureReading",

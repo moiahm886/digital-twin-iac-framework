@@ -3,12 +3,5 @@
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "Sensor",
-  "extends": "dtmi:moiz:core:Entity;1",
-  "contents": [
-    {
-      "@type": "Telemetry",
-      "name": "reading",
-      "schema": "double"
-    }
-  ]
+  "extends": "dtmi:moiz:core:Entity;1"
 }
