@@ -48,10 +48,10 @@ public class EventHubToAdt
             {
                 var co2 = root.GetProperty("co2ppm").GetDouble();
                 var patch = new JsonPatchDocument();
-                patch.AppendReplace("/currentCO2", co2);
+                patch.AppendReplace("/currentCO2ppm", co2);
 
                 await _adtClient.UpdateDigitalTwinAsync(sensorId, patch);
-                _logger.LogInformation($"Updated {sensorId}.currentCO2 = {co2}");
+                _logger.LogInformation($"Updated {sensorId}.currentCO2ppm = {co2}");
             }
             else
             {
