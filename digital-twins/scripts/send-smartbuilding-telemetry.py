@@ -13,13 +13,13 @@ def send_telemetry():
 
     temp_payload = {
         "sensorId": "tempSensor101",
-        "temperature": 25.5,
+        "temperature": 29.5,
         "timestamp": time.time()
     }
 
     co2_payload = {
         "sensorId": "co2Sensor101",
-        "co2ppm": 650,
+        "co2ppm": 780,
         "timestamp": time.time()
     }
 
