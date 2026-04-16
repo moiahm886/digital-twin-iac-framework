@@ -1,9 +1,9 @@
 {
-  "@id": "dtmi:moiz:vehicle:AutonomousVehicle;1",
+  "@id": "dtmi:dtframework:vehicle:AutonomousVehicle;1",
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "Autonomous Vehicle",
-  "extends": "dtmi:moiz:core:Entity;1",
+  "extends": "dtmi:dtframework:core:Entity;1",
   "contents": [
     {
       "@type": "Property",
@@ -18,7 +18,7 @@
     {
       "@type": "Relationship",
       "name": "hasPowertrain",
-      "target": "dtmi:moiz:vehicle:Powertrain;1",
+      "target": "dtmi:dtframework:vehicle:Powertrain;1",
       "maxMultiplicity": 1
     }
   ]

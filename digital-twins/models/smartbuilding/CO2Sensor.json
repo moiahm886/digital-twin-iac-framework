@@ -1,9 +1,9 @@
 {
-  "@id": "dtmi:moiz:smartbuilding:CO2Sensor;1",
+  "@id": "dtmi:dtframework:smartbuilding:CO2Sensor;1",
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "CO2 Sensor",
-  "extends": "dtmi:moiz:core:Sensor;1",
+  "extends": "dtmi:dtframework:core:Sensor;1",
   "contents": [
     { "name": "currentCO2ppm", "@type": "Property", "schema": "double" },
     {

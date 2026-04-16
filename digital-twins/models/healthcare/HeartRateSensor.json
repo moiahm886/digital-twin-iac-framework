@@ -1,9 +1,9 @@
 {
-  "@id": "dtmi:moiz:healthcare:HeartRateSensor;1",
+  "@id": "dtmi:dtframework:healthcare:HeartRateSensor;1",
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "Heart Rate Sensor",
-  "extends": "dtmi:moiz:core:Sensor;1",
+  "extends": "dtmi:dtframework:core:Sensor;1",
   "contents": [
     {
       "@type": "Property",

@@ -1,5 +1,5 @@
 {
-  "@id": "dtmi:moiz:core:Entity;1",
+  "@id": "dtmi:dtframework:core:Entity;1",
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "Entity",

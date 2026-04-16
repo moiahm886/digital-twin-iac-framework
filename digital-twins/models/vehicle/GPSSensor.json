@@ -1,9 +1,9 @@
 {
-  "@id": "dtmi:moiz:vehicle:GPSSensor;1",
+  "@id": "dtmi:dtframework:vehicle:GPSSensor;1",
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "GPS Sensor",
-  "extends": "dtmi:moiz:core:Sensor;1",
+  "extends": "dtmi:dtframework:core:Sensor;1",
   "contents": [
     {
       "@type": "Property",

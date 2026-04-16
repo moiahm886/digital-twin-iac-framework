@@ -1,9 +1,9 @@
 {
-  "@id": "dtmi:moiz:healthcare:PatientMonitor;1",
+  "@id": "dtmi:dtframework:healthcare:PatientMonitor;1",
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "Patient Monitor",
-  "extends": "dtmi:moiz:core:Entity;1",
+  "extends": "dtmi:dtframework:core:Entity;1",
   "contents": [
     {
       "@type": "Property",
@@ -13,7 +13,7 @@
     {
       "@type": "Relationship",
       "name": "hasMonitoringUnit",
-      "target": "dtmi:moiz:healthcare:MonitoringUnit;1",
+      "target": "dtmi:dtframework:healthcare:MonitoringUnit;1",
       "maxMultiplicity": 1
     }
   ]

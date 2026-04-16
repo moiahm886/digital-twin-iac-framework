@@ -1,4 +1,4 @@
-param prefix string = 'moiz'
+param prefix string = 'dtframework'
 param location string = resourceGroup().location
 
 param dtName string = '${prefix}-dt-instance'

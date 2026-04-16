@@ -1,9 +1,9 @@
 {
-  "@id": "dtmi:moiz:smartbuilding:HVACUnit;1",
+  "@id": "dtmi:dtframework:smartbuilding:HVACUnit;1",
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "HVAC Unit",
-  "extends": "dtmi:moiz:core:Subsystem;1",
+  "extends": "dtmi:dtframework:core:Subsystem;1",
   "contents": [
     { "name": "powerState", "@type": "Property", "schema": "string" }
   ]

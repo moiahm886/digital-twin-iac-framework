@@ -1,9 +1,9 @@
 {
-  "@id": "dtmi:moiz:healthcare:BloodPressureSensor;1",
+  "@id": "dtmi:dtframework:healthcare:BloodPressureSensor;1",
   "@type": "Interface",
   "@context": "dtmi:dtdl:context;2",
   "displayName": "Blood Pressure Sensor",
-  "extends": "dtmi:moiz:core:Sensor;1",
+  "extends": "dtmi:dtframework:core:Sensor;1",
   "contents": [
     {
       "@type": "Property",

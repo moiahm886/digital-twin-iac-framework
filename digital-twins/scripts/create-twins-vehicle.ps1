@@ -1,4 +1,4 @@
-$dtName = "moiz-dt-instance"
+$dtName = "dtframework-dt-instance"
 
 function New-JsonFile($obj) {
     $path = [System.IO.Path]::GetTempFileName() + ".json"
@@ -11,7 +11,7 @@ $vehicleProps = New-JsonFile @{ vin = "VIN-001"; model = "Model-X" }
 az dt twin create `
   --dt-name $dtName `
   --twin-id "vehicle001" `
-  --model-id "dtmi:moiz:vehicle:AutonomousVehicle;1" `
+  --model-id "dtmi:dtframework:vehicle:AutonomousVehicle;1" `
   --properties @$vehicleProps
 
 Write-Host "Creating Powertrain twin..."
@@ -19,7 +19,7 @@ $ptProps = New-JsonFile @{}
 az dt twin create `
   --dt-name $dtName `
   --twin-id "powertrain001" `
-  --model-id "dtmi:moiz:vehicle:Powertrain;1" `
+  --model-id "dtmi:dtframework:vehicle:Powertrain;1" `
   --properties @$ptProps
 
 Write-Host "Creating Battery Sensor twin..."
@@ -27,7 +27,7 @@ $battProps = New-JsonFile @{ currentChargePercentage = 87.5 }
 az dt twin create `
   --dt-name $dtName `
   --twin-id "batterySensor001" `
-  --model-id "dtmi:moiz:vehicle:BatterySensor;1" `
+  --model-id "dtmi:dtframework:vehicle:BatterySensor;1" `
   --properties @$battProps
 
 Write-Host "Creating GPS Sensor twin..."
@@ -35,7 +35,7 @@ $gpsProps = New-JsonFile @{ currentLatitude = 31.5204; currentLongitude = 74.358
 az dt twin create `
   --dt-name $dtName `
   --twin-id "gpsSensor001" `
-  --model-id "dtmi:moiz:vehicle:GPSSensor;1" `
+  --model-id "dtmi:dtframework:vehicle:GPSSensor;1" `
   --properties @$gpsProps
 
 Write-Host "Creating relationships..."

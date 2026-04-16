@@ -2,7 +2,7 @@ import json
 import time
 from azure.eventhub import EventHubProducerClient, EventData
 
-EVENTHUB_CONNECTION_STRING = "Endpoint=sb://moiz-ehns.servicebus.windows.net/;SharedAccessKeyName=telemetrySendListen;SharedAccessKey=8jFBUnPO0shSuTGE74PLzNjqA2GKkljjt+AEhC7qqCE="
+EVENTHUB_CONNECTION_STRING = "Endpoint=sb://dtframework-ehns.servicebus.windows.net/;SharedAccessKeyName=telemetrySendListen;SharedAccessKey=8jFBUnPO0shSuTGE74PLzNjqA2GKkljjt+AEhC7qqCE="
 EVENTHUB_NAME = "telemetry"
 
 def send_telemetry():

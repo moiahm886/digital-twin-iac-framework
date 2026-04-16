@@ -1,4 +1,4 @@
-$dtName = "moiz-dt-instance"
+$dtName = "dtframework-dt-instance"
 
 # Helper to create JSON files
 function New-JsonFile($obj) {
@@ -12,7 +12,7 @@ $pmProps = New-JsonFile @{ patientId = "P-001" }
 az dt twin create `
   --dt-name $dtName `
   --twin-id "patientMonitor001" `
-  --model-id "dtmi:moiz:healthcare:PatientMonitor;1" `
+  --model-id "dtmi:dtframework:healthcare:PatientMonitor;1" `
   --properties @$pmProps
 
 Write-Host "Creating Monitoring Unit twin..."
@@ -20,7 +20,7 @@ $muProps = New-JsonFile @{}
 az dt twin create `
   --dt-name $dtName `
   --twin-id "monitoringUnit001" `
-  --model-id "dtmi:moiz:healthcare:MonitoringUnit;1" `
+  --model-id "dtmi:dtframework:healthcare:MonitoringUnit;1" `
   --properties @$muProps
 
 Write-Host "Creating Blood Pressure Sensor twin..."
@@ -28,7 +28,7 @@ $bpProps = New-JsonFile @{ currentSystolic = 120; currentDiastolic = 80 }
 az dt twin create `
   --dt-name $dtName `
   --twin-id "bpSensor001" `
-  --model-id "dtmi:moiz:healthcare:BloodPressureSensor;1" `
+  --model-id "dtmi:dtframework:healthcare:BloodPressureSensor;1" `
   --properties @$bpProps
 
 Write-Host "Creating Heart Rate Sensor twin..."
@@ -36,7 +36,7 @@ $hrProps = New-JsonFile @{ currentBPM = 72 }
 az dt twin create `
   --dt-name $dtName `
   --twin-id "hrSensor001" `
-  --model-id "dtmi:moiz:healthcare:HeartRateSensor;1" `
+  --model-id "dtmi:dtframework:healthcare:HeartRateSensor;1" `
   --properties @$hrProps
 
 Write-Host "Creating relationships..."
