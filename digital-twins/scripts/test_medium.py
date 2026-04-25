@@ -1,20 +1,18 @@
 # test_medium.py
 # Scenario: Medium Load Test
-# Rate: 500 msg/s | Duration: 3 minutes
-# Domains: Vehicle heavy, Smart Building moderate, Healthcare light
+# Rate: 250 msg/s | Duration: 2 minutes
+# Domains: Vehicle Medium, Smart Building moderate, Healthcare light
 
 import json
 import time
 import random
-import threading
 from azure.eventhub import EventHubProducerClient, EventData
 
 CONN_STR = "Endpoint=sb://dtframework-ehns.servicebus.windows.net/;SharedAccessKeyName=telemetrySendListen;SharedAccessKey=tjhw+Y3cIm+hfoApLGMkepc7cHGNe5Ecv+AEhALuDek="
 EVENTHUB_NAME = "telemetry"
 
-TARGET_RATE = 500
-DURATION_SECONDS = 180  # 3 minutes
-NUM_WORKERS = 5         # 100 msg/s each
+BATCH_SIZE = 25
+DURATION_SECONDS = 120  # 2 minutes
 
 def generate_vehicle_gps():
     return {"sensorId": "gpsSensor001", "domain": "vehicle", "latitude": round(random.uniform(59.3, 59.5), 6), "longitude": round(random.uniform(24.6, 24.9), 6), "timestamp": time.time()}
@@ -34,82 +32,69 @@ def generate_healthcare_hr():
 def generate_healthcare_bp():
     return {"sensorId": "bpSensor", "domain": "healthcare", "systolic": round(random.uniform(110, 140), 1), "diastolic": round(random.uniform(70, 90), 1), "timestamp": time.time()}
 
-# Vehicle 50%, Smart Building 30%, Healthcare 20%
+# Equal domain split:
+# Vehicle 2/6 = 33.3%
+# Smart Building 2/6 = 33.3%
+# Healthcare 2/6 = 33.3%
 domain_cycle = [
     generate_vehicle_gps,
     generate_vehicle_battery,
-    generate_vehicle_gps,
-    generate_vehicle_battery,
-    generate_vehicle_gps,
+
     generate_smartbuilding_temp,
     generate_smartbuilding_co2,
-    generate_smartbuilding_temp,
+
     generate_healthcare_hr,
     generate_healthcare_bp,
 ]
 
-stats = {"sent": 0, "errors": 0}
-stats_lock = threading.Lock()
-
-def worker(worker_id, end_time):
+def run():
     producer = EventHubProducerClient.from_connection_string(CONN_STR, eventhub_name=EVENTHUB_NAME)
-    interval = 1.0 / (TARGET_RATE / NUM_WORKERS)
+
+    start_time = time.time()
+    end_time = start_time + DURATION_SECONDS
+    total_sent = 0
+    total_errors = 0
     msg_counter = 0
+    batch_counter = 0
+
+    print(f"[Medium] Starting — ~1000 msg/s for {DURATION_SECONDS}s")
+    print(f"[Medium] Batch size: {BATCH_SIZE}, sleep: 0.1s between batches")
+    print(f"[Medium] Start time: {time.strftime('%H:%M:%S')}")
 
     while time.time() < end_time:
         loop_start = time.time()
 
-        payload = domain_cycle[msg_counter % len(domain_cycle)]()
-
         try:
             batch = producer.create_batch()
-            batch.add(EventData(json.dumps(payload)))
+            for _ in range(BATCH_SIZE):
+                payload = domain_cycle[msg_counter % len(domain_cycle)]()
+                batch.add(EventData(json.dumps(payload)))
+                msg_counter += 1
             producer.send_batch(batch)
-            with stats_lock:
-                stats["sent"] += 1
+            total_sent += BATCH_SIZE
+            batch_counter += 1
         except Exception as e:
-            with stats_lock:
-                stats["errors"] += 1
-            print(f"[Worker {worker_id}] ERROR: {e}")
+            total_errors += BATCH_SIZE
+            print(f"[ERROR] Batch {batch_counter} failed: {e}")
 
-        msg_counter += 1
+        if batch_counter % 10 == 0:
+            elapsed = time.time() - start_time
+            rate = total_sent / elapsed if elapsed > 0 else 0
+            print(f"[Medium] {elapsed:.0f}s — sent {total_sent} msgs, rate {rate:.0f} msg/s, errors {total_errors}")
 
-        sleep_time = interval - (time.time() - loop_start)
+        sleep_time = 0.1 - (time.time() - loop_start)
         if sleep_time > 0:
             time.sleep(sleep_time)
 
     producer.close()
 
-def run():
-    start_time = time.time()
-    end_time = start_time + DURATION_SECONDS
-
-    print(f"[Medium] Starting — {TARGET_RATE} msg/s for {DURATION_SECONDS}s with {NUM_WORKERS} workers")
-    print(f"[Medium] Domain split — Vehicle 50%, SmartBuilding 30%, Healthcare 20%")
-    print(f"[Medium] Start time: {time.strftime('%H:%M:%S')}")
-
-    threads = []
-    for i in range(NUM_WORKERS):
-        t = threading.Thread(target=worker, args=(i, end_time))
-        threads.append(t)
-        t.start()
-
-    # Progress monitor
-    while time.time() < end_time:
-        time.sleep(30)
-        elapsed = time.time() - start_time
-        with stats_lock:
-            print(f"[Medium] {elapsed:.0f}s elapsed — sent {stats['sent']} msgs, errors {stats['errors']}")
-
-    for t in threads:
-        t.join()
-
     duration = time.time() - start_time
     print(f"\n[Medium] Complete")
     print(f"  Duration:     {duration:.1f}s")
-    print(f"  Total sent:   {stats['sent']}")
-    print(f"  Total errors: {stats['errors']}")
-    print(f"  Avg rate:     {stats['sent'] / duration:.2f} msg/s")
+    print(f"  Total sent:   {total_sent}")
+    print(f"  Total errors: {total_errors}")
+    print(f"  Avg rate:     {total_sent / duration:.2f} msg/s")
+    print(f"  Batches sent: {batch_counter}")
     print(f"  End time:     {time.strftime('%H:%M:%S')}")
 
 if __name__ == "__main__":
