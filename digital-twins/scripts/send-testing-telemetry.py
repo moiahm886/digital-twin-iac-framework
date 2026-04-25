@@ -1,7 +1,7 @@
 import json, time
 from azure.eventhub import EventHubProducerClient, EventData
 
-CONN_STR = "Endpoint=sb://dtframework-ehns.servicebus.windows.net/;SharedAccessKeyName=telemetrySendListen;SharedAccessKey=tjhw+Y3cIm+hfoApLGMkepc7cHGNe5Ecv+AEhALuDek="
+CONN_STR = "CONN_STR"
 EVENTHUB_NAME = "telemetry"
 
 def send_all_domains():
