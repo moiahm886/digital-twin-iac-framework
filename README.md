@@ -1,6 +1,7 @@
 # Digital Twin IaC Framework
 
-A domain-agnostic framework for deploying scalable Digital Twin systems on Microsoft Azure using Infrastructure as Code (Bicep). Developed as part of the M.Sc. Software Engineering thesis *Framework for Deploying Scalable Digital Twins Using Infrastructure as Code* at the University of Tartu, 2026.
+A domain-agnostic framework for deploying scalable Digital Twin systems on Microsoft Azure using Infrastructure as Code (Bicep). Developed as part of the M.Sc. Software Engineering thesis *Framework for Deploying Digital Twin
+Systems Using Infrastructure as Code* at the University of Tartu, 2026.
 
 ---
 
@@ -197,7 +198,7 @@ The architectural implication is that the framework scales horizontally without 
 
 This repository accompanies the M.Sc. thesis:
 
-> **Framework for Deploying Scalable Digital Twins Using Infrastructure as Code**
+> **Framework for Deploying Digital Twin Systems Using Infrastructure as Code**
 > Moiz Ahmad, M.Sc. Software Engineering, University of Tartu, 2026.
 
 ---
