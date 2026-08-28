@@ -1,0 +1,36 @@
+{
+  "domain": "vehicle",
+  "modelPrefix": "dtmi:dtframework:vehicle",
+  "entity": {
+    "model": "AutonomousVehicle;1",
+    "idPattern": "vehicle{i:03d}",
+    "indexStart": 1,
+    "count": 1,
+    "properties": { "vin": "VIN-{i:03d}", "model": "Model-X" }
+  },
+  "subsystem": {
+    "model": "Powertrain;1",
+    "idPattern": "powertrain{i:03d}",
+    "relationship": "hasPowertrain",
+    "properties": {}
+  },
+  "sensors": [
+    {
+      "model": "BatterySensor;1",
+      "idPattern": "batterySensor{i:03d}",
+      "properties": { "currentChargePercentage": 87.5 },
+      "telemetry": [
+        { "fields": ["batteryPercent"], "patch": { "currentChargePercentage": "batteryPercent" } }
+      ]
+    },
+    {
+      "model": "GPSSensor;1",
+      "idPattern": "gpsSensor{i:03d}",
+      "properties": { "currentLatitude": 31.5204, "currentLongitude": 74.3587 },
+      "telemetry": [
+        { "fields": ["latitude", "longitude"],
+          "patch": { "currentLatitude": "latitude", "currentLongitude": "longitude" } }
+      ]
+    }
+  ]
+}

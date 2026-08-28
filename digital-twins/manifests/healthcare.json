@@ -1,0 +1,36 @@
+{
+  "domain": "healthcare",
+  "modelPrefix": "dtmi:dtframework:healthcare",
+  "entity": {
+    "model": "PatientMonitor;1",
+    "idPattern": "patientMonitor{i:03d}",
+    "indexStart": 1,
+    "count": 1,
+    "properties": { "patientId": "P-{i:03d}" }
+  },
+  "subsystem": {
+    "model": "MonitoringUnit;1",
+    "idPattern": "monitoringUnit{i:03d}",
+    "relationship": "hasMonitoringUnit",
+    "properties": {}
+  },
+  "sensors": [
+    {
+      "model": "HeartRateSensor;1",
+      "idPattern": "hrSensor{i:03d}",
+      "properties": { "currentBPM": 72 },
+      "telemetry": [
+        { "fields": ["bpm"], "patch": { "currentBPM": "bpm" } }
+      ]
+    },
+    {
+      "model": "BloodPressureSensor;1",
+      "idPattern": "bpSensor{i:03d}",
+      "properties": { "currentSystolic": 120, "currentDiastolic": 80 },
+      "telemetry": [
+        { "fields": ["systolic", "diastolic"],
+          "patch": { "currentSystolic": "systolic", "currentDiastolic": "diastolic" } }
+      ]
+    }
+  ]
+}

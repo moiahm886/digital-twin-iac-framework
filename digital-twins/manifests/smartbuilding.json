@@ -1,0 +1,35 @@
+{
+  "domain": "smartbuilding",
+  "modelPrefix": "dtmi:dtframework:smartbuilding",
+  "entity": {
+    "model": "Room;1",
+    "idPattern": "room{i}",
+    "indexStart": 101,
+    "count": 1,
+    "properties": { "roomNumber": "{i}", "floor": 1, "status": "active" }
+  },
+  "subsystem": {
+    "model": "HVACUnit;1",
+    "idPattern": "hvac{i}",
+    "relationship": "hasHVAC",
+    "properties": { "powerState": "on", "status": "active" }
+  },
+  "sensors": [
+    {
+      "model": "TemperatureSensor;1",
+      "idPattern": "tempSensor{i}",
+      "properties": { "currentTemperature": 22.5, "status": "active" },
+      "telemetry": [
+        { "fields": ["temperature"], "patch": { "currentTemperature": "temperature" } }
+      ]
+    },
+    {
+      "model": "CO2Sensor;1",
+      "idPattern": "co2Sensor{i}",
+      "properties": { "currentCO2ppm": 450, "status": "active" },
+      "telemetry": [
+        { "fields": ["co2ppm"], "patch": { "currentCO2ppm": "co2ppm" } }
+      ]
+    }
+  ]
+}
