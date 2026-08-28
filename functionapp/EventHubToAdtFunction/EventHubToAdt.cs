@@ -1,6 +1,7 @@
-using Azure;
+using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Text.Json;
+using Azure;
 using Azure.DigitalTwins.Core;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
@@ -31,9 +32,12 @@ public class EventHubToAdt
     {
         var sw = Stopwatch.StartNew();
         var gate = new SemaphoreSlim(MaxConcurrentUpdates);
+        var latencies = new ConcurrentBag<double>();
+
         var ok = 0;
         var unmatched = 0;
         var failed = 0;
+        string? batchRunId = null;
 
         var work = messages.Select(async raw =>
         {
@@ -42,6 +46,11 @@ public class EventHubToAdt
             {
                 using var doc = JsonDocument.Parse(raw);
                 var root = doc.RootElement;
+
+                // The run id travels in the message. Setting it as an app setting
+                // would restart the Function App and force a cold start per run.
+                if (batchRunId is null && root.TryGetProperty("runId", out var rid))
+                    batchRunId = rid.GetString();
 
                 var twinId = root.GetProperty("sensorId").GetString();
                 if (twinId is null) { Interlocked.Increment(ref unmatched); return; }
@@ -54,12 +63,17 @@ public class EventHubToAdt
                     patch.AppendReplace("/" + property, value);
 
                 await _adt.UpdateDigitalTwinAsync(twinId, patch);
+
+                // End to end: producer send timestamp to twin update returning.
+                if (root.TryGetProperty("sentAt", out var sentAt))
+                    latencies.Add(DateTimeOffset.UtcNow.ToUnixTimeMilliseconds() - sentAt.GetInt64());
+
                 Interlocked.Increment(ref ok);
             }
             catch (Exception ex)
             {
                 Interlocked.Increment(ref failed);
-                _logger.LogError(ex, "Twin update failed. RunId={RunId}", _runId);
+                _logger.LogError(ex, "Twin update failed. RunId={RunId}", batchRunId ?? _runId);
             }
             finally
             {
@@ -74,11 +88,15 @@ public class EventHubToAdt
         // so Kusto queries can be scoped to a single load test.
         _logger.LogInformation(
             "BatchComplete RunId={RunId} Size={Size} Ok={Ok} Unmatched={Unmatched} " +
-            "Failed={Failed} DurationMs={DurationMs}",
-            _runId, messages.Length, ok, unmatched, failed, sw.ElapsedMilliseconds);
+            "Failed={Failed} DurationMs={DurationMs} LatencyAvgMs={LatencyAvgMs} " +
+            "LatencyMaxMs={LatencyMaxMs}",
+            batchRunId ?? _runId, messages.Length, ok, unmatched, failed,
+            sw.ElapsedMilliseconds,
+            latencies.Count > 0 ? Math.Round(latencies.Average(), 1) : 0,
+            latencies.Count > 0 ? latencies.Max() : 0);
 
         // A failed twin update must not be checkpointed as a success. Throwing
-        // holds the checkpoint so the batch is retried.
+        // holds the checkpoint so the batch is redelivered.
         if (failed > 0)
             throw new InvalidOperationException(
                 $"{failed} of {messages.Length} twin updates failed in this batch.");

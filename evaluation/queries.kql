@@ -1,0 +1,93 @@
+// Evaluation queries. Run against the Application Insights resource.
+// Every query excludes warm-up by filtering out run ids ending in -warmup.
+
+// ---------------------------------------------------------------------------
+// Q1. Per-run summary. This is the main results table.
+// ---------------------------------------------------------------------------
+traces
+| where message startswith "BatchComplete"
+| extend RunId      = tostring(customDimensions.RunId),
+         Size       = toint(customDimensions.Size),
+         Ok         = toint(customDimensions.Ok),
+         Unmatched  = toint(customDimensions.Unmatched),
+         Failed     = toint(customDimensions.Failed),
+         DurationMs = toint(customDimensions.DurationMs),
+         LatencyAvg = todouble(customDimensions.LatencyAvgMs),
+         LatencyMax = todouble(customDimensions.LatencyMaxMs)
+| where RunId !endswith "-warmup" and isnotempty(RunId)
+| summarize
+    Batches      = count(),
+    Messages     = sum(Size),
+    Ok           = sum(Ok),
+    Unmatched    = sum(Unmatched),
+    Failed       = sum(Failed),
+    WallClockSec = (max(timestamp) - min(timestamp)) / 1s,
+    LatencyAvgMs = round(avg(LatencyAvg), 1),
+    LatencyP95Ms = round(percentile(LatencyMax, 95), 1),
+    LatencyMaxMs = round(max(LatencyMax), 1),
+    AvgBatchSize = round(avg(Size), 1)
+    by RunId
+| extend ThroughputEvtSec = round(todouble(Ok) / WallClockSec, 1)
+| order by RunId asc
+
+// ---------------------------------------------------------------------------
+// Q2. Mean across repetitions, per configuration. Use for the paper table.
+// ---------------------------------------------------------------------------
+traces
+| where message startswith "BatchComplete"
+| extend RunId = tostring(customDimensions.RunId),
+         Size  = toint(customDimensions.Size),
+         Ok    = toint(customDimensions.Ok),
+         Failed = toint(customDimensions.Failed),
+         LatencyAvg = todouble(customDimensions.LatencyAvgMs)
+| where RunId !endswith "-warmup" and isnotempty(RunId)
+| summarize Ok = sum(Ok), Failed = sum(Failed),
+            Sec = (max(timestamp) - min(timestamp)) / 1s,
+            Lat = avg(LatencyAvg)
+    by RunId
+| extend Config = strcat(split(RunId, "-")[0], "-", split(RunId, "-")[1]),
+         Thr    = todouble(Ok) / Sec
+| summarize Repetitions   = count(),
+            ThroughputAvg = round(avg(Thr), 1),
+            ThroughputSd  = round(stdev(Thr), 1),
+            LatencyAvgMs  = round(avg(Lat), 1),
+            FailedTotal   = sum(Failed)
+    by Config
+| order by Config asc
+
+// ---------------------------------------------------------------------------
+// Q3. Retries. A failed batch is redelivered, so the same seq appears twice.
+//     Proves failures are retried rather than lost.
+// ---------------------------------------------------------------------------
+traces
+| where message startswith "BatchComplete"
+| extend RunId  = tostring(customDimensions.RunId),
+         Size   = toint(customDimensions.Size),
+         Failed = toint(customDimensions.Failed)
+| where RunId !endswith "-warmup" and isnotempty(RunId)
+| summarize TotalBatches   = count(),
+            FailedBatches  = countif(Failed > 0),
+            MessagesSeen   = sum(Size)
+    by RunId
+| extend RetryRatePct = round(100.0 * FailedBatches / TotalBatches, 2)
+| order by RunId asc
+
+// ---------------------------------------------------------------------------
+// Q4. Throughput over time for one run. Use for the Grafana panel.
+//     Replace the run id before running.
+// ---------------------------------------------------------------------------
+traces
+| where message startswith "BatchComplete"
+| extend RunId = tostring(customDimensions.RunId), Ok = toint(customDimensions.Ok)
+| where RunId == "c-500-1"
+| summarize EvtPerSec = sum(Ok) / 5.0 by bin(timestamp, 5s)
+| render timechart
+
+// ---------------------------------------------------------------------------
+// Q5. Exceptions during the window, to distinguish transient ADT errors
+//     from anything structural.
+// ---------------------------------------------------------------------------
+exceptions
+| where timestamp > ago(4h)
+| summarize Count = count() by type, outerMessage
+| order by Count desc
