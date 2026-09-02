@@ -1,0 +1,56 @@
+{
+  "rules": [
+    {
+      "fields": [
+        "systolic",
+        "diastolic"
+      ],
+      "patch": {
+        "currentSystolic": "systolic",
+        "currentDiastolic": "diastolic"
+      }
+    },
+    {
+      "fields": [
+        "latitude",
+        "longitude"
+      ],
+      "patch": {
+        "currentLatitude": "latitude",
+        "currentLongitude": "longitude"
+      }
+    },
+    {
+      "fields": [
+        "bpm"
+      ],
+      "patch": {
+        "currentBPM": "bpm"
+      }
+    },
+    {
+      "fields": [
+        "temperature"
+      ],
+      "patch": {
+        "currentTemperature": "temperature"
+      }
+    },
+    {
+      "fields": [
+        "co2ppm"
+      ],
+      "patch": {
+        "currentCO2ppm": "co2ppm"
+      }
+    },
+    {
+      "fields": [
+        "batteryPercent"
+      ],
+      "patch": {
+        "currentChargePercentage": "batteryPercent"
+      }
+    }
+  ]
+}
