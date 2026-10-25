@@ -1,5 +1,5 @@
 param prefix string = 'dtframework'
-param location string = resourceGroup().location
+param location string = 'westeurope'
 
 param dtName string = '${prefix}-dt-instance'
 param ehNamespaceName string = '${prefix}-ehns'
